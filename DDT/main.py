@@ -21,6 +21,7 @@ def train(**kwargs):
     # load data
     train_data = ImageProcessing(data_root=opt.data_root)
     data_loader = DataLoader(train_data, batch_size=opt.batch_size, shuffle=False, num_workers=opt.num_workers)
+    print(train_data.categories)
     for category in train_data.categories:
         features, img_pth = [], []
         train_data.load_images_path(category)

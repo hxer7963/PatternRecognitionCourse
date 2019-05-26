@@ -1,6 +1,6 @@
-#### Introduction
+#### Deep Descriptor Transforming(DDT)
 
-Deep Descriptor Transforming(**DDT**) is a simple yet effective unsupervised approach for image retrieval. You can read the corresponding paper which is listed in the reference section for deep-in understand the amazing DDT approach.
+**DDT** is a simple yet effective unsupervised approach for image retrieval. You can read the corresponding paper which is listed in the reference section for deep-in understand the amazing DDT approach.
 
 The code defaults use **VGG19 pretrained network** to extract features from relu5_4 layer on the **GPU** which enabled CUDA , but if GPU is not available, code will seamlessly switch to execute on the CPU.
 
@@ -9,7 +9,7 @@ You can safely modify the source code for academic usage. For example, using **d
 #### Example
 
 ![](./data/horse.jpg)
-![](./data/airplane/ddt_0029.jpg)
+![](./data/children/ddt/aroni-arsa-children-little.jpg)
 
 #### Dependencies
 
@@ -17,15 +17,17 @@ You can safely modify the source code for academic usage. For example, using **d
 
 #### Usage
 
-> (torch) $ python main.py train
+> (torch) /DDT$ python main.py train
 
-The generated annotation image will be saved in the `data/`、`./data/label/` folders.
+The generated annotation image will be saved in the `data/label.jpg`、`./data/label/ddt/` folders.
 
 #### Reference
 
 - Official guide: [Unsupervised Object Discovery and Co-Localization by Deep Descriptor Transformation](<http://lamda.nju.edu.cn/weixs/project/DDT/DDT.html>).
 - X.-S. Wei, C.-L. Zhang, Y. Li, C.-W. Xie, J. Wu, C. Shen, and Z.-H. Zhou. [Deep Descriptor Transforming for Image Co-Localization](http://lamda.nju.edu.cn/weixs/publication/ijcai17.pdf). *In Proceedings of* [*International Joint Conference on Artificial Intelligence (IJCAI’17)*](http://ijcai-17.org/), Melbourne, Australia, 2017, pp. 3048-3054.
 - Matlab version for DDT: https://github.com/tzzcl/DDT.
+- Another PyTorch version for DDT: https://github.com/GeoffreyChen777/DDT. It's necessary to note that, My Code especially the DDT part is based on this modification.
+
 #### LICENSE
 
 CC BY-SA 3.0

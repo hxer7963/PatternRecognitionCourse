@@ -24,11 +24,15 @@ class ImageProcessing(data.Dataset):
         else:
             raise ValueError('please implement transforms method.')
 
-    def load_images_path(self, sub_dir='', ext='jpg', seed=43):        
+    def load_images_path(self, sub_dir='', seed=43):
         pics_pth = os.path.join(self.data_root, sub_dir)
-        print('loading pictures from {}/**.{}'.format(pics_pth, ext))
+        ddt_dir = os.path.join(pics_pth, 'ddt')
+        if not os.path.isdir(ddt_dir):
+            os.mkdir(ddt_dir)
+        print('loading pictures from {}/'.format(pics_pth))
         assert os.path.isdir(pics_pth), "sub_dir is invaild label of this dataset."
-        self.images_pth = glob.glob(pics_pth+'/**/*.{}'.format(ext), recursive=True) 
+        self.images_pth = [os.path.join(pics_pth, filename) for filename in os.listdir(pics_pth) if not filename.startswith('.') and filename != 'ddt']
+        # self.images_pth = glob.glob(pics_pth+'/**/*.{}'.format(ext), recursive=True) 
 
     def __getitem__(self, index):
         assert abs(index) < len(self.images_pth)
@@ -37,8 +41,6 @@ class ImageProcessing(data.Dataset):
         pth = pic_pth  # dummy variance in this application(DDT)
         # label = None -> will raise classType Error.
         data = Image.open(pic_pth).convert('RGB')
-        # with torch.no_grad():
-        #     data = Variable(self.transforms(data)) # .unsqueeze(0)
         data = self.transforms(data)
         return data, pth
 

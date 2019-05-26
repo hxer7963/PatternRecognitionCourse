@@ -13,7 +13,7 @@ class DDT(object):
     def __init__(self, features):    
         super(DDT, self).__init__()
         # K is the # of deep self.descriptors which is a Channel-dim vectors.
-        self.features = features        
+        self.features = features
 
     def pca(self):
         N, C, H, W = self.features.shape
@@ -75,43 +75,7 @@ class DDT(object):
             except ValueError as e:
                 print(e)
             same_image = np.concatenate(same_image, 1)
-            cv2.imwrite('./data/{}/ddt_{}'.format(category, pth.split('/')[-1]), same_image)
+            img_pth = './data/{}/ddt/{}'.format(category, pth.split('/')[-1])
+            cv2.imwrite(img_pth, same_image)
         masked_image = np.concatenate(masked_img, 1)
         cv2.imwrite('./data/{}.jpg'.format(category), masked_image)
-
-    def regionprops(self):
-        vis = np.zeros((224, 224))
-        regions = []
-        di = [[0, -1], [-1, 0], [0, 1], [1, 0]]
-        def bfs(x, y):
-            region = []
-            from queue import Queue
-            Q = Queue()
-            Q.put((x, y))
-            vis[x][y] = 1
-            while not Q.empty():
-                (x, y) = Q.get()
-                region.append((x, y))
-                for d_x, d_y in di:
-                    now_x, now_y = x + d_x, y + d_y
-                    if 0 <= now_x < 224 and 0 <= now_y < 224 and self.bin_img[now_x][now_y] == 1 and vis[now_x][now_y] == 0:
-                        Q.put((now_x, now_y))
-                        vis[now_x][now_y] = 1
-            regions.append(region)
-
-        for i in range(224):
-            for j in range(224):
-                if vis[i][j] == 0 and self.bin_img[i][j] == 1:
-                    bfs(i, j)
-                    # print(len(regions[-1]), end=' ')
-        if not regions:
-            raise ValueError('maybe current image is a negative example.')
-        max_cc = max(regions, key=lambda region: len(region))
-        min_r, min_c, max_r, max_c = 255, 255, -1, -1
-        for r, c in max_cc:
-            min_r = min(min_r, r)
-            min_c = min(min_c, c)
-            max_r = max(max_r, r)
-            max_c = max(max_c, c)
-        print(min_r, min_c, max_r, max_c)
-        return min_r, min_c, max_r, max_c
